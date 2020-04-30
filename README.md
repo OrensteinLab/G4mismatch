@@ -26,7 +26,6 @@ Use `python G4mismatch.py --help` to view the complete list of input arguments.
 | Argument | Short hand | Description|
 | :-------------: | :-------------: |:--------------:|
 | g4mm_model | gm  | Denotes the G4mismatch method you would like to explore:<br> <li>`WG` - for whole genome models </li> <br> <li>`PQ` - for PQ models</li> |
-| ------------- | ------------- |--------------|
 | use  | u  |Denotes your use :<br> <li>`train` - for training a new model </li> <br> <li>`test` - for testing data with existing models</li> <br> <li>`cv` - k-fold cross validation (avalable for `PQ`) </li> |
 
 
