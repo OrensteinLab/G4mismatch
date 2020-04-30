@@ -1,6 +1,6 @@
 # G4mismatch
 
-We present G4mismatch, a convolutional neural network for the prediction of DNA G-quadruplex (G4) mismatch scores. We developed and trained G4mismatch on two tasks: prediction of G4 mismatch score of any given DNA sequence, and prediction of G4 propensity score for putative quadruplexes.
+We present G4mismatch, a convolutional neural network for the prediction of DNA G-quadruplex (G4) mismatch scores. We developed and trained G4mismatch on two tasks: prediction of G4 mismatch score of any given DNA sequence with th WG model, and prediction of G4 propensity score for putative quadruplexes with the PQ model.
 
 ## Getting Started
 
