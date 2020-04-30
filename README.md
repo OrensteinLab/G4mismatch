@@ -38,7 +38,7 @@ Use `python G4mismatch.py --help` to view the complete list of input arguments.
 | --use_generator | -ug |Boolean indicating if a generator is to be used for training whole-genome models. Reccomended for very large datasets and available only for bedGraph input. Default is set to False|
 | --workers | -w |Maximum number of processes to spin when the generator is used.|
 | --queue | -q |Maximum queue size when genrator is used.|
-| --scores | sc |Path to sequence scores, required for fasta input in train mode. For each sequence in the fasta file, this file should contain one value per line|
+| --scores | -sc |Path to sequence scores, required for fasta input in train mode. For each sequence in the fasta file, this file should contain one value per line|
 | --othe_model | -om | Path to a trained model for test mode. Proved this argument if you wish to use a model defferent from the ones already provided.|
 | --fold_num | -fn | Number of fods to be processed in k-folds cross-validation.|
 | --get_history | -gh | If you wish to obtain the training history, provide a path to the destination folder. The file will be saved there under `history.pkl`.|
