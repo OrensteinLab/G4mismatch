@@ -22,7 +22,7 @@ python G4mismatch.py \
 ```
 Use `python G4mismatch.py --help` to view the complete list of input arguments.
 
-## Arguments
+#### Arguments
 | Argument | Short hand | Description|
 | ------------- | ------------- | -------------- |
 | --g4mm_model | -gm | Denotes the G4mismatch method you would like to explore: <br> <li>`WG` - for whole genome models </li> <br> <li>`PQ` - for PQ models</li> |
