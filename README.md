@@ -24,9 +24,13 @@ Use `python G4mismatch.py --help` to view the complete list of input arguments.
 
 ## Arguments
 | Argument | Short hand | Description|
-| :-------------: | :-------------: |:--------------:|
-| g4mm_model | gm  | Denotes the G4mismatch method you would like to explore:<br> <li>`WG` - for whole genome models </li> <br> <li>`PQ` - for PQ models</li> |
-| use  | u  |Denotes your use :<br> <li>`train` - for training a new model </li> <br> <li>`test` - for testing data with existing models</li> <br> <li>`cv` - k-fold cross validation (avalable for `PQ`) </li> |
+| ------------- | ------------- | -------------- |
+| g4mm_model | gm | Denotes the G4mismatch method you would like to explore: <br> <li>`WG` - for whole genome models </li> <br> <li>`PQ` - for PQ models</li> |
+| use | u |Denotes your use:<br> <li>`train` - for training a new model </li> <br> <li>`test` - for testing data with existing models</li> <br> <li>`cv` - k-fold cross validation (avalable for `PQ`) </li> |
+| input | i  | Path to the input file you want to process. <br> `WG` accepts bedGraphe files with an additional fifth binary column, where 0 indicates forward strand and 1 is the forward strand, and fasta files.<br>`PQ` accepts csv files generated with `prep_pq.py` (coming soon).|
+| stabilizer | s |Denotes one of two stabilizers used to generate the data G4mismatch midels were trained on:<br> <li>`K` </li> <br> <li>`PDS`</li><br>Default coice is `K` .|
+| flank | f |Denotes the length of the flanks on each side of the processed sequence. Originally the G4mismatch models were trained with flank sizes of 0, 50, 100 and 150, but you're free to choose any size you prefer. Note that existing models can not process sequences larger then their original input size, these sequences will be dropped. Smaller sequences will be padded with zeros.<br> Default value is 100|
+
 
 
 ### Break down into end to end tests
