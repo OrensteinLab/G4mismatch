@@ -130,17 +130,3 @@ def G4mismatchWG(args):
 
     return
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
