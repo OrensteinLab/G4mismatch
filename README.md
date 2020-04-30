@@ -28,8 +28,22 @@ Use `python G4mismatch.py --help` to view the complete list of input arguments.
 | g4mm_model | gm | Denotes the G4mismatch method you would like to explore: <br> <li>`WG` - for whole genome models </li> <br> <li>`PQ` - for PQ models</li> |
 | use | u |Denotes your use:<br> <li>`train` - for training a new model </li> <br> <li>`test` - for testing data with existing models</li> <br> <li>`cv` - k-fold cross validation (avalable for `PQ`) </li> |
 | input | i  | Path to the input file you want to process. <br> `WG` accepts bedGraphe files with an additional fifth binary column, where 0 indicates forward strand and 1 is the forward strand, and fasta files.<br>`PQ` accepts csv files generated with `prep_pq.py` (coming soon).|
+| model_feat | mf  | G4mismatch-PQ, has several stuctures, that differ from each othe in the way they accept the input. This argument denotes whis of these models you would like to explore.<br> <li>`base` - raw input sequence with concatinated flanks on each side. </li> <br> <li>`split` - the sequence and its flanks are used as separate inputs to the model</li> <br> <li>`split_numloop` - `split` input with an additional integer indicating the number of loops</li><br> <li>`split_looplen` - `split` input with an additional vector length of each loop</li>|
 | stabilizer | s |Denotes one of two stabilizers used to generate the data G4mismatch midels were trained on:<br> <li>`K` </li> <br> <li>`PDS`</li><br>Default coice is `K` .|
 | flank | f |Denotes the length of the flanks on each side of the processed sequence. Originally the G4mismatch models were trained with flank sizes of 0, 50, 100 and 150, but you're free to choose any size you prefer. Note that existing models can not process sequences larger then their original input size, these sequences will be dropped. Smaller sequences will be padded with zeros.<br> Default value is 100|
+| genome_path | g |If a bedGraph file is provided, G4mismatch requires a path to the genome assembly in order to extract the sequences.|
+| number_of_jobs | nj |Number of jobs if you want to parallaze the reading of the genome assembly. Recommended if the assembly is split between multiple files (like hg19, for example)|
+| epochs | e |Number of training epochs. Default value is 50.|
+| batch_size | bs |Size of training batch.|
+| use_generator | ug |Boolean indicating if a generator is to be used for training whole-genome models. Reccomended for very large datasets and available only for bedGraph input. Default is set to False|
+| workers | w |Maximum number of processes to spin when the generator is used.|
+| q | queue |Maximum queue size when genrator is used.|
+| -sc | scores |Path to sequence scores, required for fasta input in train mode. For each sequence in the fasta file, this file should contain one value per line|
+| othe_model | om | Path to a trained model for test mode. Proved this argument if you wish to use a model defferent from the ones already provided.|
+| fold_num | fn | Number of fods to be processed in k-folds cross-validation.|
+| get_history | gh | If you wish to obtain the training history, provide a path to the destination folder. The file will be saved there under `history.pkl`.|
+| get_cv_preds | gcp | If you wish to obtain the predictions made for each fold in the cross-validation mode, provide a path to the destination folder. The files will be saved there under `pq_scores_<fold number>.pkl`.|
+
 
 
 
