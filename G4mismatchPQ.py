@@ -27,7 +27,7 @@ def G4mismatchPQ(args):
         if args['model_feat'] == 'train':
             fold_size = df.shape[0]
         else:
-            fold_size = int(np.ceil(df.shape[0] / args['number of folds']))
+            fold_size = int(np.ceil(df.shape[0] / int(args['fold_num'])))
 
         folds = np.arange(0, df.shape[0], fold_size)
 
