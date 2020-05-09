@@ -7,7 +7,7 @@ from keras.models import load_model
 from pq_utils import prep_data
 import pandas as pd
 import numpy as np
-
+import sys
 
 
 def G4mismatchPQ(args):
@@ -22,12 +22,16 @@ def G4mismatchPQ(args):
     if args['model_feat'] != 'test':
 
         X_in = prep_data(x, args, loops=loops)
+        if not np.isin('mm', df.columns):
+            print('True scores should have been provided.\n'
+                  'Use PQmmt.py to create a new dataset with compatible scores.')
+            sys.exit()
         y = df['mm'].to_numpy()
 
         if args['model_feat'] == 'train':
             fold_size = df.shape[0]
         else:
-            fold_size = int(np.ceil(df.shape[0] / int(args['fold_num'])))
+            fold_size = int(np.ceil(df.shape[0] / args['number of folds']))
 
         folds = np.arange(0, df.shape[0], fold_size)
 
@@ -69,7 +73,6 @@ def G4mismatchPQ(args):
                         end = len(df)
                     else:
                         end = start + fold_size
-
 
                     df_scores = pd.DataFrame({"seq": x[start:end], "label": y_test, "score": pred})
                     df_scores.to_csv(args['get_cv_preds'] + "pq_scores_" + str(i) + ".csv")

@@ -41,7 +41,7 @@ def G4mismatchWG(args):
 
         if args['use_generator'] == 'True':
 
-            ind_tr = get_ds(args['train_file'])
+            ind_tr = get_ds(args['input'])
             train_gen = MissGen(ind_tr, bs=bs, chro=gn,
                                 path='../bedGraph/chr_out/GSE63874_Na_' + stab + '_train.bedGraph',
                                 stat='train', flank=flank)
@@ -55,12 +55,12 @@ def G4mismatchWG(args):
         elif args['use_generator'] == 'False':
 
             if tr_ext == '.bedGraph':
-                df = pd.read_csv(args['train_file'], header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t')
+                df = pd.read_csv(args['input'], header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t')
                 X = df.apply(lambda x: read_seq(x, gn, flank), axis=1)
                 y = df['mm'].to_numpy()
 
             elif tr_ext == '.fa':
-                df = pd.read_csv(args['train_file'], header=None)[0]
+                df = pd.read_csv(args['input'], header=None)[0]
                 X = df[1::2].str.upper()
                 X.reset_index(inplace=True, drop=True)
 
@@ -129,4 +129,18 @@ def G4mismatchWG(args):
         print('All done!')
 
     return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
