@@ -52,7 +52,7 @@ PQ sequences can be generated using:
 python prepPQ.py \
        -i <input file> \
 ```
-To use G4mismatch-PQ you must process your dataset with `prepPQ.py`.
+To use G4mismatch-PQ you must preprocess your dataset with `prepPQ.py`.
 <!--
 ### Break down into end to end tests
 
