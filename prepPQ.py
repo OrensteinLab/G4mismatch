@@ -42,7 +42,7 @@ def user_input():
 
     parser.add_argument('-o', '--output_file', help='Name the output file', type=str, required=False, default='pqf')
     parser.add_argument('-sc', '--scores', help='Path to true score file for fasta input.',
-                        type=str, required=False, default='pqf')
+                        type=str, required=False)
 
     args = parser.parse_args()
     arguments = vars(args)
