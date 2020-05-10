@@ -44,8 +44,15 @@ Use `python G4mismatch.py --help` to view the complete list of input arguments.
 | --get_history | -gh | If you wish to obtain the training history, provide a path to the destination folder. The file will be saved there under `history.pkl`.|
 | --get_cv_preds | -gcp | If you wish to obtain the predictions made for each fold in the cross-validation mode, provide a path to the destination folder. The files will be saved there under `pq_scores_<fold number>.pkl`.|
 
+#### Datasets
 
-
+G4mismatch was developed using scores reported in the G4-seq experiments (GEO accession number GSE63874).
+PQ sequences can be generated using:
+```
+python prepPQ.py \
+       -i <input file> \
+```
+To use G4mismatch-PQ you must process your dataset with `prepPQ.py`.
 <!--
 ### Break down into end to end tests
 
