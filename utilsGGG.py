@@ -19,14 +19,21 @@ def rev_comp(seq):
 def read_chr(path):
     # =============================================================================
     #   This function read a chromosome from the provided path.
-    #     Input: ptath - input file path
-    #     Output: chr - chromosome string
+    #     Input: path - input file path
+    #     Output: genes - a dict of all the chromosomes in path
     # =============================================================================
-    chr_n = pd.read_csv(path)
-    i = path[11:-3]
-    chr = chr_n['>chr' + i].str.cat(sep='')
+    gn = pd.read_csv(path, header=None)
+    chr_head = gn[0][gn[0].str.contains('>')]
+    chr_head = pd.concat([chr_head, pd.Series([0], index=[gn.index[-1] + 1])])
+    genes = {}
+    for i, ch in enumerate(chr_head):
+        if ch == 0:
+            break
+        gene = gn[0][chr_head.index[i] + 1:chr_head.index[i + 1]]
+        gene = gene.str.cat(sep='')
+        genes.update({ch[1:]: gene.upper()})
 
-    return chr
+    return genes
 
 
 def get_ds(path):
@@ -77,19 +84,11 @@ def oneHot(string, max_seq=None):
 def read_seq(df, gn, f):
     # =============================================================================
     #   This extracts DNA sequence from genome assembly according to provided bedGraph coordinates
-    #     Input: df - DataFrame object with sequence information, gn - list of chromosome strings,
+    #     Input: df - DataFrame object with sequence information,
+    #            gn - list of chromosome strings,
     #            f - size of padding flanks
     #     Output: seq - extracted sequence padded with flanks
     # =============================================================================
-    chro = df['chr'][:][3:]
-    if chro == 'X':
-        chro = 22
-    elif chro == 'Y':
-        chro = 23
-    elif chro == 'M':
-        chro = 24
-    else:
-        chro = int(chro)-1
 
     start = df['start'] - f
 
@@ -97,10 +96,10 @@ def read_seq(df, gn, f):
         start = df['start']
 
     end = df['end'] + f
-    if end > len(gn[chro]):
+    if end > len(gn[df['chr']]):
         end = df['end']
 
-    seq = gn[chro][start:end].upper()
+    seq = gn[df['chr']][start:end]
 
     if df['mp'] == 1:
         seq = rev_comp(seq)
@@ -147,7 +146,7 @@ def loop_info(loop):
 
     split_l = re.split(r'\[|\]|,| ', loop)
     split_l = list(filter(lambda x: x != '', split_l))
-    ll = np.array(split_l, dtype=np.uint8)
+    ll = np.array(split_l[1:], dtype=np.uint8)
 
     return ll
 
@@ -155,16 +154,15 @@ def loop_info(loop):
 
 class MissGen(Sequence):
 
-    def __init__(self, ind_co, bs, chro, path, stat, flank, shuffle=True, train=True):
+    def __init__(self, ind_co, bs, chro, locs, stat, flank, shuffle=True, train=True):
 
         self.ind_co = ind_co
         self.shuffle = shuffle
         self.bs = bs
-        self.path = path
         self.chr = chro
         self.train = train
         self.stat = stat
-        self.locs = pd.read_csv(self.path, header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t') #
+        self.locs = locs
         self.f = flank
 
     def __len__(self):
@@ -205,6 +203,3 @@ class MissGen(Sequence):
         y = data_temp['mm']
 
         return X, y
-
-
-
