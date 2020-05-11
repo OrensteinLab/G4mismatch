@@ -113,5 +113,3 @@ def prep_data(data, args, p=None, loops=None):
             X_in.append(loop_in)
 
     return X_in
-
-
