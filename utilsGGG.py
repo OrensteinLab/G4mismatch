@@ -164,7 +164,7 @@ class MissGen(Sequence):
         self.chr = chro
         self.train = train
         self.stat = stat
-        self.locs = pd.read_csv(self.path, header=None, names=["chr", "start", "end", "mm", "mp"]) #sep='\t'
+        self.locs = pd.read_csv(self.path, header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t') #
         self.f = flank
 
     def __len__(self):
