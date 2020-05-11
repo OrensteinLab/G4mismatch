@@ -4,48 +4,43 @@ import pickle
 import sys
 from keras.models import load_model
 from keras.callbacks import ModelCheckpoint
-import os
 import numpy as np
 import pandas as pd
-from joblib import Parallel, delayed
 
 
 def G4mismatchWG(args):
 
-    stab = args['stabilizer']
     flank = int(args['flank'])
 
+    df = pd.read_csv(args['input'], header=None, sep='\t')
+    if df.shape[1] == 1:
+        ext = 'fa'
+    elif df.shape[1] > 1:
+        ext = 'bed'
+        df.rename(columns={0: "chr", 1: "start", 2: "end"}, inplace=True)
+        if df.shape[1] > 3:
+            df.rename(columns={3: "score"}, inplace=True)
+
+    if ext == 'bed':
+        if not args['genome_path']:
+            print('use -g to provide path to relevant genome assembly')
+            sys.exit()
+        else:
+            gn = read_chr(args['genome_path'])
 
     if args['use'] == 'train':
 
-        tr_ext = os.path.splitext(args['input'])[1]
-
-        if not tr_ext == '.bedGraph' or not tr_ext == '.fa':
-            print('allowed input file extensions are bedGraph or fa')
-            sys.exit()
-
-        if tr_ext == '.bedGraph':
-            if not args['genome_path']:
-                print('use -g to provide path to relevant genome assembly')
-                sys.exit()
-            else:
-                l = list(np.arange(1, 23)) + ['X', 'Y', 'M']
-                paths = list(map(lambda x: args['genome_path'], l))
-                gn = Parallel(n_jobs=args['number_of_jobs'])(delayed(read_chr)(x) for x in paths)
-
-        model = mdl((15 + (flank * 2), 4), filters=256, lr=1e-3, fc=32)
+        model = mdl((15 + (flank * 2), 4), filter_size=256, lr=1e-3, fc=32)
         mc = ModelCheckpoint(args['output'] + '_model.h5', period=1)
-
         epochs = int(args['epochs'])
         bs = int(args['batch_size'])
 
         if args['use_generator'] == 'True':
+            if ext != 'bed':
+                print('for now, the generator option may only be used for bed files')
+                sys.exit()
 
-            ind_tr = get_ds(args['input'])
-            train_gen = MissGen(ind_tr, bs=bs, chro=gn,
-                                path='../bedGraph/chr_out/GSE63874_Na_' + stab + '_train.bedGraph',
-                                stat='train', flank=flank)
-
+            train_gen = MissGen(len(df), bs=bs, chro=gn, locs=df, stat='train', flank=flank)
             print('Starting training process')
             history = model.fit_generator(generator=train_gen, use_multiprocessing=True,
                                           max_queue_size=int(args['queue']), workers=int(args['workers']),
@@ -53,22 +48,15 @@ def G4mismatchWG(args):
                                           epochs=epochs, verbose=1, callbacks=[mc])
 
         elif args['use_generator'] == 'False':
-
-            if tr_ext == '.bedGraph':
-                df = pd.read_csv(args['input'], header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t')
+            if ext == 'bed':
                 X = df.apply(lambda x: read_seq(x, gn, flank), axis=1)
                 y = df['mm'].to_numpy()
-
-            elif tr_ext == '.fa':
-                df = pd.read_csv(args['input'], header=None)[0]
-                X = df[1::2].str.upper()
-                X.reset_index(inplace=True, drop=True)
-
+            elif ext == 'fa':
+                X = df[0][1::2].str.upper()
                 if not args['scores']:
-                    print('use -sc to provide the path to the scores')
+                    print('use -sc to provide target scores for training')
                     sys.exit()
-
-                y = pd.read_csv(args['scores'], header=None)[0].to_numpy()
+                y = pd.read_csv(args['scores'], header=None)[0]
 
             l = X.apply(len)
             max_seq = np.max(l)
@@ -87,37 +75,20 @@ def G4mismatchWG(args):
 
     elif args['use'] == 'test':
 
-        '''
-        this is a temporary version
-        for the time being this script deals only with squences of length 15+flank*2
-        all other sequences
-        '''
-
-        t_ext = os.path.splitext(args['input'])[1]
-
-        if not t_ext == '.bedGraph' or not t_ext == '.fa':
-            print('allowed input file extensions are bedGraph or fa')
-            sys.exit()
-
         if args['other_model']:
             p = args['other_model']
         else:
-            p = 'models/' + args['stabilizer'] + '/model_' + str(flank) + '.h5'
+            p = 'WGmodels/' + args['stabilizer'] + '/model_' + str(flank) + '.h5'
         model = load_model(p)
 
-        if t_ext == '.bedGraph':
-            df = pd.read_csv(args['input'], header=None, names=["chr", "start", "end", "mm", "mp"], sep='\t')
-            l = list(np.arange(1, 23)) + ['X', 'Y', 'M']
-            paths = list(map(lambda x: args['genome_path'], l))
-            gn = Parallel(n_jobs=args['number_of_jobs'])(delayed(read_chr)(x) for x in paths)
+        if ext == 'bed':
             X = df.apply(lambda x: read_seq(x, gn, flank), axis=1)
 
-        elif t_ext == '.fa':
-            df = pd.read_csv(args['input'], header=None)[0]
+        elif ext == 'fa':
             X = df[1::2].str.upper()
 
         l = X.apply(len)
-        max_seq = np.max(model.input_shape[0][1])
+        max_seq = model.input_shape[0][1]
         X = X[l <= max_seq] #temporary
         X_oh = X.apply(lambda x: oneHot(x, max_seq))
         X_oh = X_oh.to_numpy()
@@ -129,18 +100,3 @@ def G4mismatchWG(args):
         print('All done!')
 
     return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
