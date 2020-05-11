@@ -146,10 +146,9 @@ def loop_info(loop):
 
     split_l = re.split(r'\[|\]|,| ', loop)
     split_l = list(filter(lambda x: x != '', split_l))
-    ll = np.array(split_l[1:], dtype=np.uint8)
+    ll = np.array(split_l, dtype=np.uint8)
 
     return ll
-
 
 
 class MissGen(Sequence):
