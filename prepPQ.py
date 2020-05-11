@@ -42,7 +42,7 @@ def user_input():
 
     parser.add_argument('-o', '--output_file', help='Name the output file', type=str, required=False, default='pqf')
     parser.add_argument('-sc', '--scores', help='Path to true score file for fasta input.',
-                        type=str, required=False)
+                        type=str, required=False, default='pqf')
 
     args = parser.parse_args()
     arguments = vars(args)
@@ -79,7 +79,6 @@ if ext == 'bed':
         df.rename(columns={3: "score"}, inplace=True)
 
     u = df['chr'].unique()
-
     pq = Parallel(n_jobs=int(args['number_of_jobs']))(delayed(findPQ)(x, args, df[df['chr'] == x]) for x in u)
 
 elif ext == 'fa':
@@ -117,21 +116,4 @@ if np.isin('score', df.columns):
     df_fin['mm'] = df['score']
 
 df_fin.to_csv(p, index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
