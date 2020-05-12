@@ -57,7 +57,7 @@ python prepPQ.py \
 | --generate | -g  | If set to `True` (default) the code file look for all the PQ sequences in the desired genome assemble, otherwise the code will generate just process the input sequences.|
 | --flank | -f |Denotes the length of the flanks on each side of the processed sequence. Originally the G4mismatch models were trained with flank sizes of 0, 50, 100 and 150, but you're free to choose any size you prefer. Note that existing models can not process sequences larger then their original input size, these sequences will be dropped. Smaller sequences will be padded with zeros.<br> Default value is 50.|
 | --regular_expression | -r |Denotes the regular expression representing the PQ sequences.<br> Default value is `(G{3,}[ACGTN]{1,12}){3,}G{3,}`.|
-| --filter_flanks | -ff |If set to `True` samples containing PQs in the flanking sequences will be filtered out. |
+| --filter_flanks | -ff |If set to `True` (default) samples containing PQs in the flanking sequences will be filtered out. |
 | --genome_path | -gen |Path to the desired genome assembly file. Required for working with bed files. Note that `prepPQ.py` requires that for all the chromosomes to be concentrated in one fasta file, where each chromosome begins with the header: `>chr<chromosome name>`.|
 | --number_of_jobs | -nj | Number of parallel threads executing PQ search. Default is set to 1.|
 | --output_file | -o  | Name of the output file.|
