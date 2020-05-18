@@ -95,7 +95,7 @@ def G4mismatchPQ(args):
         if args['other_model']:
             p = args['other_model']
         else:
-            p = 'models/' + args['model_config'] + '/' + stab + '/model_' + str(flank) + '.h5'
+            p = 'PQmodels/' + stab + '/model_' + args['model_feat'] + '_' + str(flank) + '.h5'
         model = load_model(p)
         max_seq = np.max(model.input_shape[0][1])
         l = x.apply(len)
