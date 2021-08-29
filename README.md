@@ -62,6 +62,7 @@ To get the mismatch score for a full sequence the drop `-fb` argument.
 #### Datasets
 
 The G4-seq data use for G4mismatch training is available at: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE110582
+
 For training G4mismatch the human chromosome 2 was used for validation, chromosome 1 was a held-out ttest set and the rest were used for training.
 
 <!--
