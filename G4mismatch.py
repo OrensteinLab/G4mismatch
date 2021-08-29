@@ -32,7 +32,7 @@ def user_input():
                                                     'If provided with \'train\' parameter, '
                                                     'the model will be fine-tuned, otherwise the model '
                                                     'is used for prediction', type=str, required=False)
-    parser.add_argument('-vn', '--val_n', help='Encoding of base N.', type=float, required=False)
+    parser.add_argument('-vn', '--val_n', help='Encoding of base N.', type=float, required=False, default=0.25)
     parser.add_argument('-af', '--add_flank', help='Pass if a flank is to be added only of one side of the main bin.',
                         type=str, required=False, choices=['first', 'last'])
     parser.add_argument('-w', '--workers', help='Number of workers for batch generation.', type=int,
