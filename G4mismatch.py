@@ -16,19 +16,18 @@ def user_input():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-f', '--flank_size', help='Number of nt\'s to pad the sequence on each side',
-                        type=int, default=50, required=False)
+                        type=int, default=100, required=False)
     parser.add_argument('-tp', '--train_path', help='Path to data', type=str, required=True)
-    parser.add_argument('-gp', '--genome_path', help='Path to genome fasta file', type=str, required=False,
-                        default='genomes/hg19/hg19.fa')
+    parser.add_argument('-gp', '--genome_path', help='Path to genome fasta file', type=str, required=True)
     parser.add_argument('-vp', '--val_path', help='Path to validation data', type=str, required=False)
     parser.add_argument('-op', '--out_path', help='Path for general diractory for saving outputs', type=str,
                         required=True)
-    parser.add_argument('-ne', '--num_epochs', help='Number of training epochs', type=int, required=False, default=50)
+    parser.add_argument('-ne', '--num_epochs', help='Number of training epochs', type=int, required=False, default=1)
     parser.add_argument('-bs', '--batch_size', help='Number of samples in a mini-batch', type=int, required=False,
-                        default=1000)
+                        default=256)
     parser.add_argument('-fs', '--filter_size', nargs='+',
                         help='Size of 1D-conv filter, one integer argument for base model and two for split',
-                        type=int, required=False, default=3)
+                        type=int, required=False, default=95)
     parser.add_argument('-mp', '--model_path', help='Path to pre-trained model. '
                                                     'If provided with \'train\' parameter, '
                                                     'the model will be fine-tuned, otherwise the model '
@@ -38,7 +37,7 @@ def user_input():
                         type=str, required=False, choices=['first', 'last'])
     parser.add_argument('-w', '--workers', help='Number of workers for batch generation.', type=int,
                         required=False, default=13)
-    parser.add_argument('-mqs', '--max_queue_size', help='Max queu size.', type=int,
+    parser.add_argument('-q', '--max_queue_size', help='Max queu size.', type=int,
                         required=False, default=30)
 
     args = parser.parse_args()
