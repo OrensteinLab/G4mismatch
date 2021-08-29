@@ -37,13 +37,13 @@ def user_input():
                         type=float, required=False)
     parser.add_argument('-m', '--merge', help='Merge consecutive bins.',
                         type=int, required=False, default=0, choices=[0, 1])
-    parser.add_argument('-mqs', '--max_queue_size', help='Max queu size.', type=int,
+    parser.add_argument('-q', '--max_queue_size', help='Max queu size.', type=int,
                         required=False, default=20)
     parser.add_argument('-mpr', '--multiprocessing', help='Use multiprocessing.', type=int,
                         required=False, default=1, choices=[0, 1])
     parser.add_argument('-vn', '--val_n',
                         help='Encoding of base N.',
-                        type=float, required=False)
+                        type=float, required=False, default=0.25)
 
     args = parser.parse_args()
     arguments = vars(args)
