@@ -21,7 +21,7 @@ python G4mismatch.py \
        -gp <path to relevent reference genome> \
 ```
 Use `python G4mismatch.py --help` to view the complete list of input arguments.
-The input to G4mismatch is a tab-deliminated file with 5 columns (no headers): chromosome, start, end, mismatch score and strand (`-` for forward strand, `+` for reverse strand, according to the G4-seq convention)
+The input to G4mismatch is a tab-deliminated file with 5 columns (no headers): chromosome, start, end, mismatch score and strand (`-` for forward strand, `+` for reverse strand, according to the G4-seq convention). An example of how the G4-seq human data is prepared for trainin is given in `prep_data.sh`
 
 To use G4mismatch trained model for the detection of potential G4 forming sequences, run:
 ```
